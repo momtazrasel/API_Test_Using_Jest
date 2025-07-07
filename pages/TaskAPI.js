@@ -2,13 +2,33 @@ const api = require("../utils/config");
 
 class TaskAPI {
   async createTask(taskData) {
-    const res = await api.post("/tasks", taskData);
-    return res.data; // returns the created task
+    try {
+      const response = await api.post("/tasks", taskData);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating task:", error.response?.data || error.message);
+      throw error;
+    }
   }
 
   async deleteTask(taskId) {
-    const res = await api.delete(`/tasks/${taskId}`);
-    return res.status;
+    try {
+      const response = await api.delete(`/tasks/${taskId}`);
+      return response.status;
+    } catch (error) {
+      console.error("Error deleting task:", error.response?.data || error.message);
+      throw error;
+    }
+  }
+
+  async getTaskById(taskId) {
+    try {
+      const response = await api.get(`/tasks/${taskId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching task:", error.response?.data || error.message);
+      throw error;
+    }
   }
 }
 

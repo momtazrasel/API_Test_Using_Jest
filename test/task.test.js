@@ -1,26 +1,26 @@
-// test/task.test.js
 const taskAPI = require("../pages/TaskAPI");
+const generateTask = require("../utils/generateTask");
 
-describe("Task API Tests", () => {
+describe("Task API Tests with Dynamic Data", () => {
   let createdTaskId;
+  let taskPayload;
 
-  test("Create a new task", async () => {
-    const taskData = {
-      title: "Test Task",
-      description: "This is a test task",
-    };
+  test("Create a new dynamic task", async () => {
+    taskPayload = generateTask();
 
-    const response = await taskAPI.createTask(taskData);
+    const response = await taskAPI.createTask(taskPayload);
     createdTaskId = response.id;
 
+    console.log("Created Task:", response);
+
     expect(response).toHaveProperty("id");
-    expect(response.title).toBe(taskData.title);
+    expect(response.name).toBe(taskPayload.name);
+    expect(response.boardId).toBe(taskPayload.boardId);
   });
 
   test("Delete the created task", async () => {
     expect(createdTaskId).toBeDefined();
-
     const status = await taskAPI.deleteTask(createdTaskId);
-    expect(status).toBe(200); // or 204 depending on API design
+    expect([200, 204]).toContain(status);
   });
 });
