@@ -1,6 +1,11 @@
 const api = require("../utils/config");
 
 class TaskAPI {
+  /**
+   * Create a new task
+   * @param {Object} taskData - Payload like { boardId, name, order }
+   * @returns {Object} - The created task response
+   */
   async createTask(taskData) {
     try {
       const response = await api.post("/tasks", taskData);
@@ -11,6 +16,11 @@ class TaskAPI {
     }
   }
 
+  /**
+   * Delete a task by ID
+   * @param {number|string} taskId
+   * @returns {number} - HTTP status code
+   */
   async deleteTask(taskId) {
     try {
       const response = await api.delete(`/tasks/${taskId}`);
@@ -21,6 +31,9 @@ class TaskAPI {
     }
   }
 
+  /**
+   * Optional: Get task by ID
+   */
   async getTaskById(taskId) {
     try {
       const response = await api.get(`/tasks/${taskId}`);
