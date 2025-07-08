@@ -1,26 +1,22 @@
-const taskAPI = require("../pages/TaskAPI");
-const generateTask = require("../utils/generateTask");
+const taskAPI = require('../pages/TaskAPI');
 
-describe("Task API Tests with Dynamic Data", () => {
-  let createdTaskId;
-  let taskPayload;
+describe('API Test Flow: Create Board → Create List → Delete List', () => {
+  let boardId;
+  let listId;
 
-  test("Create a new task with dynamic data", async () => {
-    taskPayload = generateTask();
-    const response = await taskAPI.createTask(taskPayload);
-    createdTaskId = response.id;
+  test('Create board and list', async () => {
+    const result = await taskAPI.createBoardAndList('Test Board', 'Test List', 3);
+    boardId = result.boardId;
+    listId = result.listId;
 
-    console.log("Created Task:", response);
-
-    expect(response).toHaveProperty("id");
-    expect(response.name).toBe(taskPayload.name);
-    expect(response.boardId).toBe(taskPayload.boardId);
-    expect(typeof response.id).toBe("number");
+    expect(boardId).toBeDefined();
+    expect(listId).toBeDefined();
+    console.log('✅ Created board:', boardId, 'and list:', listId);
   });
 
-  test("Delete the created task", async () => {
-    expect(createdTaskId).toBeDefined();
-    const status = await taskAPI.deleteTask(createdTaskId);
-    expect([200, 204]).toContain(status);
+  test('Delete created list', async () => {
+    const response = await taskAPI.deleteList(listId);
+    expect([200, 204]).toContain(response.status);
+    console.log('🗑️ Deleted list with ID:', listId);
   });
 });

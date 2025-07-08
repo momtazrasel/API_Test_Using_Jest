@@ -1,10 +1,5 @@
-const axios = require("axios");
+require('dotenv').config();
 
-const api = axios.create({
-  baseURL: process.env.BASE_URL , // change this
-  headers: {
-    "Content-Type": "application/json"
-  },
-});
-
-module.exports = api;
+module.exports = {
+  baseUrl: process.env.BASE_URL
+};
